@@ -8,4 +8,6 @@ class ProductRespositories {
 	public function products(){
 		return Product::orderBy('id','desc')->paginate(5);
 	}
+
+	
 }

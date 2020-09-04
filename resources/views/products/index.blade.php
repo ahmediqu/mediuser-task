@@ -16,7 +16,9 @@
                 </div>
                 <div class="col-md-2">
                     <select name="variant" id="" class="form-control">
-
+                        @foreach($varinat as $vr)
+                        <option value="">{{$vr->variant}}</option>
+                        @endforeach
                     </select>
                 </div>
 

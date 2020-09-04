@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\ProductVariantPrice;
 use App\Models\Variant;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Repositories\ProductRespositories;
 use Carbon\Carbon;
@@ -26,6 +27,7 @@ class ProductController extends Controller
     {
         $data = [];
         $data['products'] = $this->productRespositories->products();
+        $data['varinat'] = ProductVariant::groupBy('variant')->get();
         return view('products.index',$data);
     }
 
@@ -48,7 +50,54 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        
+        // dd($request->image);
+        // exit();
+        $product_name = $request->product_name;
+        $product_sku = $request->product_sku;
+        $description = $request->description;
+        $validatedData = $request->validate([
+            'product_name' => ['required'],
+            'product_sku' => ['required'],
+            'description' => ['required'],
+        ]);
+
+        if ($product_name) {
+            $savedata = new Product();
+            $savedata->title = $product_name;
+            $savedata->sku = $product_sku;
+            $savedata->description = $description;
+            $savedata->save();
+        }
+    
+     
+            
+           $data=array();
+           $data['product_id'] = $savedata->id;
+
+
+
+
+
+            $produt_image = new ProductImage;
+            if($files=$request->file('image')){
+                foreach($files as $file){
+
+
+                    $image_name = time().'.'.$file->getClientOriginalExtension();
+
+
+                    $image_full_name = $image_name;
+                    $destination_path = 'uploads/products/';
+                    $image_url = $destination_path . $image_full_name;
+                    $success = $file->move($destination_path, $image_full_name);
+                    if ($success) {
+                        
+                       $data['file_path']=$success;
+                    }
+                    $produt_image->create($data);
+                }
+
+        }
     }
 
 
