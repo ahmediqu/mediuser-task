@@ -63,7 +63,7 @@
                     <?php $i++; ;?>
                     <tr>
                         <td>{{$i}}</td>
-                        <td>{{$product['title']}} <br> Created at : {{$product['created_at']}}</td>
+                        <td>{{$product['title']}} <br> Created at : {{$product['created_at']->diffForHumans()}}</td>
                         <td>{!! $product['description'] !!}</td>
                         <td>
                             <dl class="row mb-0" style="height: 80px; overflow: hidden" id="variant">
@@ -100,7 +100,7 @@
                     <p>Showing 1 to  {{$products->count()}} out of  {{$products->count()}}</p>
                 </div>
                 <div class="col-md-2">
-
+                    {{$products->links()}}
                 </div>
             </div>
         </div>

@@ -6,13 +6,6 @@ use Carbon\Carbon;
 class ProductRespositories {
 
 	public function products(){
-		return Product::orderBy('id','desc')->get()->map(function($product) {
-			return [
-				'id' => $product->id,
-				'title' => $product->title,
-				'description' => $product->description,
-				'created_at' => $product->created_at->diffForHumans()
-			];
-		});
+		return Product::orderBy('id','desc')->paginate(5);
 	}
 }
