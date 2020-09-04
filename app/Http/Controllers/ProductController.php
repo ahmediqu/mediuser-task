@@ -7,9 +7,14 @@ use App\Models\ProductVariant;
 use App\Models\ProductVariantPrice;
 use App\Models\Variant;
 use Illuminate\Http\Request;
-
+use App\Repositories\ProductRespositories;
 class ProductController extends Controller
 {
+    private $productRespositories;
+
+    public function __construct(ProductRespositories $productRespositories){
+        $this->productRespositories = $productRespositories;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +22,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('products.index');
+        $data = [];
+        $data['products'] = $this->productRespositories->products();
+        return view('products.index',$data);
     }
 
     /**
