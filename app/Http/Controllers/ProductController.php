@@ -8,6 +8,8 @@ use App\Models\ProductVariantPrice;
 use App\Models\Variant;
 use Illuminate\Http\Request;
 use App\Repositories\ProductRespositories;
+use Carbon\Carbon;
+use DB;
 class ProductController extends Controller
 {
     private $productRespositories;
@@ -94,5 +96,19 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function filter(Request $request){
+        $title = $request->title;
+        $price_from = $request->price_from;
+        $price_to = $request->price_to;
+        $date = Carbon::parse($request->date);
+
+        $data = [];
+        $data['products'] = DB::table('products')
+                    ->orWhere('title', $title)
+                    ->orWhere('created_at', '>=', $date)
+                    ->get();
+        return view('products.filter',$data);
     }
 }
